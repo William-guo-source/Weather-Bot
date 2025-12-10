@@ -277,9 +277,9 @@ def linebot():
             text_message = TextSendMessage(text=reply_all)
             line_bot_api.reply_message(reply_token, text_message)
 
-            # gemini_input = f"{forcast_msg} {aqi_msg}" # 使用處理過的字串作為輸入
-            # reply_gemini = get_gemini_response(gemini_input)
-            # line_bot_api.push_message(user_id, TextSendMessage(text=reply_gemini)) 
+            gemini_input = f"{forcast_msg} {aqi_msg}" # 使用處理過的字串作為輸入
+            reply_gemini = get_gemini_response(gemini_input)
+            line_bot_api.push_message(user_id, TextSendMessage(text=reply_gemini)) 
 
     except Exception as e:
         print(e)
@@ -370,5 +370,6 @@ if __name__ == "__main__":
        print('OK for connecting gemini ~~')
     else:
        print("Gemini API Key 找不到，請檢查 .env 檔案。")
+
 
 
