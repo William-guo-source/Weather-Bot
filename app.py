@@ -142,7 +142,8 @@ def forecast(address):  # 氣象局天氣預報
                             
                             # ElementValue 是一個陣列，第一個元素包含 WeatherDescription
                             weather_desc = time_period['ElementValue'][0]['WeatherDescription']
-                            prediction = f'「{location_name}{area}」未來3個小時天氣'+ weather_desc
+                            print(f'這是weather forecast 函數內接收到的 :{weather_desc}\n')
+                            prediction = f'「{location_name}{area}」未來3個小時天氣{weather_desc}'
                             return prediction
         return None   #無資料回傳 None
     except KeyError as e:
@@ -189,7 +190,7 @@ def air(address):   # 空氣品質監測
 
     for i in result:
         if i in address:
-            air_pred = f'AQI: {result[i][0]}，空氣品質{result[i][1]}'
+            air_pred = f'AQI: {result[i][0]}，空氣品質{result[i][1]}\n'
             print(air_pred)
             return air_pred
             # print(f'新北市永和區: {result[i]}')   # 測試結果
@@ -271,26 +272,14 @@ def linebot():
             forcast_msg = reply_forcast if isinstance(reply_forcast, str) else "⚠️ 天氣預報查詢失敗或查無資料。"
             aqi_msg = reply_aqi if isinstance(reply_aqi, str) else "☁️ 空氣品質查詢失敗或查無資料。"
 
-            # 只有在兩個訊息至少有一個有效時才組合，否則回覆統一錯誤
-            if "查詢失敗" in forcast_msg and "查詢失敗" in aqi_msg:
-                reply_all = "抱歉，天氣和空品查詢均失敗，請稍後再試。"
-            else:
-                reply_all = f'{forcast_msg} \n\n {aqi_msg}'
-
-
-            # reply_all = f'{reply_forcast} \n\n {reply_aqi}'
+            print(f'準備使用line回傳的結果: {forcast_msg} + {aqi_msg}\n')
+            reply_all = f'{forcast_msg} \n\n {aqi_msg}'
             text_message = TextSendMessage(text=reply_all)
-            line_bot_api.reply_message(reply_token,text_message)
+            line_bot_api.reply_message(reply_token, text_message)
 
-            # Gemini 部分也要安全處理
-            gemini_input = f"{forcast_msg} {aqi_msg}" # 使用處理過的字串作為輸入
-
-            # reply_gemini = get_gemini_response(reply_forcast + reply_aqi)
-            # Gemini 部分也要安全處理
-            gemini_input = f"{forcast_msg} {aqi_msg}" # 使用處理過的字串作為輸入
-            reply_gemini = get_gemini_response(gemini_input)
-            # line_bot_api.push_message(user_id, TextMessage(text=reply_gemini))
-            line_bot_api.push_message(user_id, TextSendMessage(text=reply_gemini)) # ⚠️ 修正：這裡應該是 TextSendMessage
+            # gemini_input = f"{forcast_msg} {aqi_msg}" # 使用處理過的字串作為輸入
+            # reply_gemini = get_gemini_response(gemini_input)
+            # line_bot_api.push_message(user_id, TextSendMessage(text=reply_gemini)) 
 
     except Exception as e:
         print(e)
