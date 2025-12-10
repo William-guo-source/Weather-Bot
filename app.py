@@ -77,8 +77,9 @@ def forecast(address):  # 氣象局天氣預報
     # 取得時間
     result = {}
     t = time.time()
-    t1 = time.localtime(t)
-    t2 = time.localtime(t + 10800)  # 三小時後
+    t1 = time.localtime(t + 28800)
+    t2 = time.localtime(t + 28800 + 10800)  # 三小時後
+    print(f'已經修改時區設定================-------------------')
     now = time.strftime('%Y-%m-%dT%H:%M:%S', t1)
     now2 = time.strftime('%Y-%m-%dT%H:%M:%S', t2)
     
@@ -370,3 +371,4 @@ if __name__ == "__main__":
        print('OK for connecting gemini ~~')
     else:
        print("Gemini API Key 找不到，請檢查 .env 檔案。")
+
