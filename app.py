@@ -19,7 +19,6 @@ MOENV_API_KEY = os.getenv('MOENV_API_KEY')
 
 def earthquake_information():  # 地震資訊
     result = []
-    # code = os.getenv('CWA_WEATHER_API')
     try:
         # 小區域 
         url = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0016-001?Authorization={CWA_WEATHER_API}'
@@ -76,8 +75,8 @@ def forecast(address):  # 氣象局天氣預報
     
     # 取得時間
     result = {}
-    t = time.time()
-    t1 = time.localtime(t + 28800)
+    t = time.time()                         # 因為使用 Vercel 部署，伺服器位置時間和我們台灣時間有差別
+    t1 = time.localtime(t + 28800)          # 所以需要多加 8 個小時，同步台灣時間
     t2 = time.localtime(t + 28800 + 10800)  # 三小時後
     print(f'已經修改時區設定================-------------------')
     now = time.strftime('%Y-%m-%dT%H:%M:%S', t1)
@@ -371,4 +370,5 @@ if __name__ == "__main__":
        print('OK for connecting gemini ~~')
     else:
        print("Gemini API Key 找不到，請檢查 .env 檔案。")
+
 
